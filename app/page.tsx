@@ -215,7 +215,7 @@ export default function Store() {
                           className="w-full h-full object-contain"
                           onError={(e) => {
                             // Fallback jika gambar belum diupload
-                            e.currentTarget.src = "qris.jpg";
+                            e.currentTarget.src = "https://i.ibb.co.com/DPpLWdvz/qris.jpg";
                           }}
                         />
                       </div>
