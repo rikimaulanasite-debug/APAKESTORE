@@ -5,7 +5,7 @@ import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send, Copy, CreditCa
 
 // Data extracted from the image
 const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
-const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
+const TELEGRAM_USERNAME = 'mandalatoto'; // Ganti dengan username Telegram Anda (tanpa @)
 
 const PAYMENT_METHODS = {
   EWALLET: [
@@ -215,7 +215,7 @@ export default function Store() {
                           className="w-full h-full object-contain"
                           onError={(e) => {
                             // Fallback jika gambar belum diupload
-                            e.currentTarget.src = "https://placehold.co/600x800/white/black?text=UPLOAD+GAMBAR+QRIS+KE\nFOLDER+PUBLIC+DENGAN\nNAMA+qris.jpg";
+                            e.currentTarget.src = "qris.jpg";
                           }}
                         />
                       </div>
