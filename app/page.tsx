@@ -5,7 +5,7 @@ import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send } from 'lucide-
 
 // Data extracted from the image
 const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
-const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
+const TELEGRAM_USERNAME = 'mandalatoto'; // Ganti dengan username Telegram Anda (tanpa @)
 
 const products = [
   { id: '1', name: 'STRICK BR REGE', color: 'bg-[#FF90E8]' },
