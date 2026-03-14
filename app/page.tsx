@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap } from 'lucide-react';
+import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send } from 'lucide-react';
 
 // Data extracted from the image
+const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
+const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
+
 const products = [
   { id: '1', name: 'STRICK BR REGE', color: 'bg-[#FF90E8]' },
   { id: '2', name: 'HEXBLADE', color: 'bg-[#FFC900]' },
@@ -39,9 +42,19 @@ export default function Store() {
     
     const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
     const encodedText = encodeURIComponent(text);
-    const waUrl = `https://wa.me/6285211527292?text=${encodedText}`;
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
     
     window.open(waUrl, '_blank');
+  };
+
+  const handleBuyTelegram = () => {
+    if (!selectedProduct || !selectedPrice) return;
+    
+    const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
+    const encodedText = encodeURIComponent(text);
+    const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodedText}`;
+    
+    window.open(tgUrl, '_blank');
   };
 
   return (
@@ -152,18 +165,32 @@ export default function Store() {
               </div>
 
               {/* Action Button */}
-              <button
-                onClick={handleBuy}
-                disabled={!selectedPrice}
-                className={`w-full py-5 border-4 border-black text-2xl md:text-3xl font-black uppercase flex items-center justify-center gap-4 transition-all font-space ${
-                  selectedPrice
-                    ? 'bg-[#FFC900] hover:bg-[#FF90E8] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] active:translate-y-2 active:translate-x-2 active:shadow-none text-black'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]'
-                }`}
-              >
-                <MessageCircle className="w-8 h-8 md:w-10 md:h-10" strokeWidth={3} />
-                {selectedPrice ? 'BELI SEKARANG VIA WA' : 'PILIH HARGA DULU'}
-              </button>
+              {selectedPrice ? (
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button
+                    onClick={handleBuy}
+                    className="flex-1 py-4 border-4 border-black text-xl md:text-2xl font-black uppercase flex items-center justify-center gap-2 transition-all font-space bg-[#33FF00] hover:bg-[#FF90E8] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] active:translate-y-2 active:translate-x-2 active:shadow-none text-black"
+                  >
+                    <MessageCircle className="w-6 h-6 md:w-8 md:h-8" strokeWidth={3} />
+                    WHATSAPP
+                  </button>
+                  <button
+                    onClick={handleBuyTelegram}
+                    className="flex-1 py-4 border-4 border-black text-xl md:text-2xl font-black uppercase flex items-center justify-center gap-2 transition-all font-space bg-[#00E5FF] hover:bg-[#FFC900] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] active:translate-y-2 active:translate-x-2 active:shadow-none text-black"
+                  >
+                    <Send className="w-6 h-6 md:w-8 md:h-8" strokeWidth={3} />
+                    TELEGRAM
+                  </button>
+                </div>
+              ) : (
+                <button
+                  disabled
+                  className="w-full py-5 border-4 border-black text-2xl md:text-3xl font-black uppercase flex items-center justify-center gap-4 transition-all font-space bg-gray-200 text-gray-400 cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+                >
+                  <ShoppingCart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={3} />
+                  PILIH HARGA DULU
+                </button>
+              )}
             </div>
           </div>
         </div>
