@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send } from 'lucide-react';
 
 // Data extracted from the image
-const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
-const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
+const WHATSAPP_NUMBER = '6285767113645'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
+const TELEGRAM_USERNAME = '@frziiwr'; // Ganti dengan username Telegram Anda (tanpa @)
 
 const products = [
   { id: '1', name: 'STRICK BR REGE', color: 'bg-[#FF90E8]' },
@@ -42,7 +42,7 @@ export default function Store() {
     
     const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
     const encodedText = encodeURIComponent(text);
-    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
+    const waUrl = `https://wa.me/6285767113645}?text=${encodedText}`;
     
     window.open(waUrl, '_blank');
   };
@@ -52,7 +52,7 @@ export default function Store() {
     
     const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
     const encodedText = encodeURIComponent(text);
-    const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodedText}`;
+    const tgUrl = `https://t.me/${frziiwr}?text=${encodedText}`;
     
     window.open(tgUrl, '_blank');
   };
@@ -63,7 +63,7 @@ export default function Store() {
       <header className="mb-12 border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter font-space">
-            APAKESTORE
+            ZyyModsOFC
           </h1>
           <div className="flex items-center gap-2 mt-2 border-t-4 border-black pt-2 w-max">
             <Zap className="w-5 h-5 fill-black" />
@@ -114,7 +114,7 @@ export default function Store() {
       {/* Footer */}
       <footer className="mt-16 border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center transform hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
         <p className="text-2xl md:text-4xl font-black uppercase font-space tracking-widest">
-          APAKESTORE ©2026
+          ZyyModsOFC ©2026
         </p>
       </footer>
 
