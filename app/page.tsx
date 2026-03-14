@@ -1,11 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send, Upload, Copy, CreditCard, QrCode } from 'lucide-react';
 
 // Data extracted from the image
 const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
-const TELEGRAM_USERNAME = 'mandalatoto'; // Ganti dengan username Telegram Anda (tanpa @)
+const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
+
+const PAYMENT_METHODS = {
+  EWALLET: [
+    { name: "DANA", number: "085211527292", owner: "IKY ID STORE" },
+    { name: "GOPAY", number: "085211527292", owner: "IKY ID STORE" },
+    { name: "OVO", number: "085211527292", owner: "IKY ID STORE" },
+    { name: "SHOPEEPAY", number: "085211527292", owner: "IKY ID STORE" },
+  ],
+  BANK: [
+    { name: "BCA", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "SEABANK", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "JAGO", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "BRI", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "BNI", number: "1234567890", owner: "IKY ID STORE" },
+  ]
+};
 
 const products = [
   { id: '1', name: 'STRICK BR REGE', color: 'bg-[#FF90E8]' },
@@ -36,11 +52,34 @@ const prices = [
 export default function Store() {
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<typeof prices[0] | null>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofPreview, setProofPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProofFile(file);
+      setProofPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert(`Berhasil menyalin: ${text}`);
+  };
+
+  const closeModal = () => {
+    setSelectedProduct(null);
+    setSelectedPrice(null);
+    setProofFile(null);
+    setProofPreview(null);
+  };
 
   const handleBuy = () => {
-    if (!selectedProduct || !selectedPrice) return;
+    if (!selectedProduct || !selectedPrice || !proofFile) return;
     
-    const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
+    const text = `Halo min, saya ingin mengkonfirmasi pembayaran:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\n*Saya akan mengirimkan foto bukti pembayaran setelah pesan ini.*`;
     const encodedText = encodeURIComponent(text);
     const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
     
@@ -48,9 +87,9 @@ export default function Store() {
   };
 
   const handleBuyTelegram = () => {
-    if (!selectedProduct || !selectedPrice) return;
+    if (!selectedProduct || !selectedPrice || !proofFile) return;
     
-    const text = `Halo min, saya ingin membeli:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\nApakah masih tersedia?`;
+    const text = `Halo min, saya ingin mengkonfirmasi pembayaran:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\n*Saya akan mengirimkan foto bukti pembayaran setelah pesan ini.*`;
     const encodedText = encodeURIComponent(text);
     const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodedText}`;
     
@@ -128,7 +167,7 @@ export default function Store() {
                 {selectedProduct.name}
               </h2>
               <button
-                onClick={() => setSelectedProduct(null)}
+                onClick={closeModal}
                 className="w-12 h-12 bg-white border-4 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:translate-x-1 active:shadow-none shrink-0 ml-4"
               >
                 <X className="w-8 h-8" strokeWidth={3} />
@@ -165,7 +204,120 @@ export default function Store() {
               </div>
 
               {/* Action Button */}
-              {selectedPrice ? (
+              {selectedPrice && (
+                <div className="mb-8 border-t-4 border-black pt-8">
+                  <div className="mb-6 inline-flex items-center gap-2 bg-black text-white px-4 py-2 border-4 border-black shadow-[4px_4px_0px_0px_rgba(200,200,200,1)]">
+                    <CreditCard className="w-6 h-6 text-[#FFC900]" strokeWidth={3} />
+                    <h3 className="text-xl font-black uppercase tracking-wide">
+                      METODE PEMBAYARAN
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* QRIS Section */}
+                    <div className="border-4 border-black p-4 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                      <div className="flex items-center gap-2 mb-4 border-b-4 border-black pb-2">
+                        <QrCode className="w-6 h-6" strokeWidth={3} />
+                        <h4 className="font-black text-lg">QRIS (ALL PAYMENT)</h4>
+                      </div>
+                      <div className="aspect-[3/4] w-full bg-gray-100 border-4 border-black flex items-center justify-center relative overflow-hidden flex-1">
+                        {/* Placeholder for QRIS, user can replace with actual image */}
+                        <img 
+                          src="https://placehold.co/600x800/white/black?text=SCAN+QRIS\nIKY+ID+STORE" 
+                          alt="QRIS" 
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <p className="text-center font-bold mt-2 text-sm">Scan QRIS di atas menggunakan aplikasi E-Wallet / M-Banking Anda.</p>
+                    </div>
+
+                    {/* Manual Transfer Section */}
+                    <div className="flex flex-col gap-4">
+                      <div className="border-4 border-black p-4 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h4 className="font-black text-lg mb-4 border-b-4 border-black pb-2">E-WALLET</h4>
+                        <div className="flex flex-col gap-3">
+                          {PAYMENT_METHODS.EWALLET.map((method, idx) => (
+                            <div key={idx} className="flex justify-between items-center">
+                              <div>
+                                <div className="font-black text-sm">{method.name}</div>
+                                <div className="text-xs font-bold text-gray-600">{method.owner}</div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono font-bold text-sm">{method.number}</span>
+                                <button onClick={() => copyToClipboard(method.number)} className="p-1.5 bg-gray-200 hover:bg-[#FFC900] border-2 border-black transition-colors">
+                                  <Copy className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="border-4 border-black p-4 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h4 className="font-black text-lg mb-4 border-b-4 border-black pb-2">BANK TRANSFER</h4>
+                        <div className="flex flex-col gap-3">
+                          {PAYMENT_METHODS.BANK.map((method, idx) => (
+                            <div key={idx} className="flex justify-between items-center">
+                              <div>
+                                <div className="font-black text-sm">{method.name}</div>
+                                <div className="text-xs font-bold text-gray-600">{method.owner}</div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono font-bold text-sm">{method.number}</span>
+                                <button onClick={() => copyToClipboard(method.number)} className="p-1.5 bg-gray-200 hover:bg-[#FFC900] border-2 border-black transition-colors">
+                                  <Copy className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Upload Bukti Pembayaran */}
+                  <div className="mt-8 border-4 border-black p-6 bg-[#FF90E8] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <h4 className="font-black text-xl mb-4 flex items-center gap-2">
+                      <Upload className="w-6 h-6" strokeWidth={3} />
+                      UPLOAD BUKTI PEMBAYARAN
+                    </h4>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                    />
+                    
+                    {!proofPreview ? (
+                      <button 
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-8 border-4 border-black border-dashed bg-white hover:bg-gray-50 flex flex-col items-center justify-center gap-2 transition-colors"
+                      >
+                        <Upload className="w-8 h-8 text-gray-400" />
+                        <span className="font-bold text-gray-500">Klik untuk memilih foto bukti transfer</span>
+                      </button>
+                    ) : (
+                      <div className="relative border-4 border-black bg-white p-2">
+                        <img src={proofPreview} alt="Bukti Pembayaran" className="w-full max-h-64 object-contain" />
+                        <button 
+                          onClick={() => {
+                            setProofFile(null);
+                            setProofPreview(null);
+                            if (fileInputRef.current) fileInputRef.current.value = '';
+                          }}
+                          className="absolute top-4 right-4 w-10 h-10 bg-red-500 text-white border-4 border-black flex items-center justify-center hover:bg-red-600 transition-colors"
+                        >
+                          <X className="w-6 h-6" strokeWidth={3} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Button */}
+              {selectedPrice && proofFile ? (
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleBuy}
@@ -188,7 +340,7 @@ export default function Store() {
                   className="w-full py-5 border-4 border-black text-2xl md:text-3xl font-black uppercase flex items-center justify-center gap-4 transition-all font-space bg-gray-200 text-gray-400 cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
                 >
                   <ShoppingCart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={3} />
-                  PILIH HARGA DULU
+                  {selectedPrice ? 'UPLOAD BUKTI DULU' : 'PILIH HARGA DULU'}
                 </button>
               )}
             </div>
