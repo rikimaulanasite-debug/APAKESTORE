@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send, Upload, Copy, CreditCard, QrCode } from 'lucide-react';
+import { useState } from 'react';
+import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send, Copy, CreditCard, QrCode } from 'lucide-react';
 
 // Data extracted from the image
 const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
@@ -52,17 +52,6 @@ const prices = [
 export default function Store() {
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<typeof prices[0] | null>(null);
-  const [proofFile, setProofFile] = useState<File | null>(null);
-  const [proofPreview, setProofPreview] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setProofFile(file);
-      setProofPreview(URL.createObjectURL(file));
-    }
-  };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -72,12 +61,10 @@ export default function Store() {
   const closeModal = () => {
     setSelectedProduct(null);
     setSelectedPrice(null);
-    setProofFile(null);
-    setProofPreview(null);
   };
 
   const handleBuy = () => {
-    if (!selectedProduct || !selectedPrice || !proofFile) return;
+    if (!selectedProduct || !selectedPrice) return;
     
     const text = `Halo min, saya ingin mengkonfirmasi pembayaran:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\n*Saya akan mengirimkan foto bukti pembayaran setelah pesan ini.*`;
     const encodedText = encodeURIComponent(text);
@@ -87,7 +74,7 @@ export default function Store() {
   };
 
   const handleBuyTelegram = () => {
-    if (!selectedProduct || !selectedPrice || !proofFile) return;
+    if (!selectedProduct || !selectedPrice) return;
     
     const text = `Halo min, saya ingin mengkonfirmasi pembayaran:\n\n🛒 *Produk:* ${selectedProduct.name}\n⏳ *Durasi:* ${selectedPrice.duration}\n💰 *Harga:* ${selectedPrice.idr} / ${selectedPrice.usd}\n\n*Saya akan mengirimkan foto bukti pembayaran setelah pesan ini.*`;
     const encodedText = encodeURIComponent(text);
@@ -221,11 +208,15 @@ export default function Store() {
                         <h4 className="font-black text-lg">QRIS (ALL PAYMENT)</h4>
                       </div>
                       <div className="aspect-[3/4] w-full bg-gray-100 border-4 border-black flex items-center justify-center relative overflow-hidden flex-1">
-                        {/* Placeholder for QRIS, user can replace with actual image */}
+                        {/* Ganti src dengan path gambar QRIS Anda */}
                         <img 
-                          src="https://placehold.co/600x800/white/black?text=SCAN+QRIS\nIKY+ID+STORE" 
-                          alt="QRIS" 
+                          src="/qris.jpg" 
+                          alt="QRIS IKY ID STORE" 
                           className="w-full h-full object-contain"
+                          onError={(e) => {
+                            // Fallback jika gambar belum diupload
+                            e.currentTarget.src = "https://placehold.co/600x800/white/black?text=UPLOAD+GAMBAR+QRIS+KE\nFOLDER+PUBLIC+DENGAN\nNAMA+qris.jpg";
+                          }}
                         />
                       </div>
                       <p className="text-center font-bold mt-2 text-sm">Scan QRIS di atas menggunakan aplikasi E-Wallet / M-Banking Anda.</p>
@@ -274,50 +265,11 @@ export default function Store() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Upload Bukti Pembayaran */}
-                  <div className="mt-8 border-4 border-black p-6 bg-[#FF90E8] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <h4 className="font-black text-xl mb-4 flex items-center gap-2">
-                      <Upload className="w-6 h-6" strokeWidth={3} />
-                      UPLOAD BUKTI PEMBAYARAN
-                    </h4>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      className="hidden" 
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                    />
-                    
-                    {!proofPreview ? (
-                      <button 
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full py-8 border-4 border-black border-dashed bg-white hover:bg-gray-50 flex flex-col items-center justify-center gap-2 transition-colors"
-                      >
-                        <Upload className="w-8 h-8 text-gray-400" />
-                        <span className="font-bold text-gray-500">Klik untuk memilih foto bukti transfer</span>
-                      </button>
-                    ) : (
-                      <div className="relative border-4 border-black bg-white p-2">
-                        <img src={proofPreview} alt="Bukti Pembayaran" className="w-full max-h-64 object-contain" />
-                        <button 
-                          onClick={() => {
-                            setProofFile(null);
-                            setProofPreview(null);
-                            if (fileInputRef.current) fileInputRef.current.value = '';
-                          }}
-                          className="absolute top-4 right-4 w-10 h-10 bg-red-500 text-white border-4 border-black flex items-center justify-center hover:bg-red-600 transition-colors"
-                        >
-                          <X className="w-6 h-6" strokeWidth={3} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
                 </div>
               )}
 
               {/* Action Button */}
-              {selectedPrice && proofFile ? (
+              {selectedPrice ? (
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleBuy}
@@ -340,7 +292,7 @@ export default function Store() {
                   className="w-full py-5 border-4 border-black text-2xl md:text-3xl font-black uppercase flex items-center justify-center gap-4 transition-all font-space bg-gray-200 text-gray-400 cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
                 >
                   <ShoppingCart className="w-8 h-8 md:w-10 md:h-10" strokeWidth={3} />
-                  {selectedPrice ? 'UPLOAD BUKTI DULU' : 'PILIH HARGA DULU'}
+                  PILIH HARGA DULU
                 </button>
               )}
             </div>
