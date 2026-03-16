@@ -15,11 +15,11 @@ const PAYMENT_METHODS = {
     { name: "SHOPEEPAY", number: "085211527292", owner: "IKY ID STORE" },
   ],
   BANK: [
-    { name: "BCA", number: "", owner: "IKY ID STORE" },
-    { name: "SEABANK", number: "", owner: "IKY ID STORE" },
-    { name: "JAGO", number: "", owner: "IKY ID STORE" },
-    { name: "BRI", number: "", owner: "IKY ID STORE" },
-    { name: "BNI", number: "", owner: "IKY ID STORE" },
+    { name: "BCA", number: "Close sementara", owner: "IKY ID STORE" },
+    { name: "SEABANK", number: "Close sementara", owner: "IKY ID STORE" },
+    { name: "BANK JAGO", number: "Close sementara", owner: "IKY ID STORE" },
+    { name: "BANK BRI", number: "Close sementara", owner: "IKY ID STORE" },
+    { name: "BANK BNI", number: "Close sementara", owner: "IKY ID STORE" },
   ]
 };
 
