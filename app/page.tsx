@@ -210,7 +210,7 @@ export default function Store() {
                       <div className="aspect-[3/4] w-full bg-gray-100 border-4 border-black flex items-center justify-center relative overflow-hidden flex-1">
                         {/* Ganti src dengan path gambar QRIS Anda */}
                         <img 
-                          src="app/qris.jpg" 
+                          src="qris.jpg" 
                           alt="QRIS IKY ID STORE" 
                           className="w-full h-full object-contain"
                           onError={(e) => {
