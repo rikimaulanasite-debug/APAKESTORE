@@ -5,7 +5,7 @@ import { ShoppingCart, X, CheckCircle2, MessageCircle, Zap, Send, Copy, CreditCa
 
 // Data extracted from the image
 const WHATSAPP_NUMBER = '6285211527292'; // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, contoh: 62 untuk Indonesia)
-const TELEGRAM_USERNAME = 'mandalatoto'; // Ganti dengan username Telegram Anda (tanpa @)
+const TELEGRAM_USERNAME = 'ApakestoreAdmin'; // Ganti dengan username Telegram Anda (tanpa @)
 
 const PAYMENT_METHODS = {
   EWALLET: [
@@ -15,11 +15,11 @@ const PAYMENT_METHODS = {
     { name: "SHOPEEPAY", number: "085211527292", owner: "IKY ID STORE" },
   ],
   BANK: [
-    { name: "BCA", number: "Close sementara", owner: "IKY ID STORE" },
-    { name: "SEABANK", number: "Close sementara", owner: "IKY ID STORE" },
-    { name: "BANK JAGO", number: "Close sementara", owner: "IKY ID STORE" },
-    { name: "BANK BRI", number: "Close sementara", owner: "IKY ID STORE" },
-    { name: "BANK BNI", number: "Close sementara", owner: "IKY ID STORE" },
+    { name: "BCA", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "SEABANK", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "JAGO", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "BRI", number: "1234567890", owner: "IKY ID STORE" },
+    { name: "BNI", number: "1234567890", owner: "IKY ID STORE" },
   ]
 };
 
@@ -210,12 +210,12 @@ export default function Store() {
                       <div className="aspect-[3/4] w-full bg-gray-100 border-4 border-black flex items-center justify-center relative overflow-hidden flex-1">
                         {/* Ganti src dengan path gambar QRIS Anda */}
                         <img 
-                          src="app/qris.jpg" 
+                          src="/qris.jpg" 
                           alt="QRIS IKY ID STORE" 
                           className="w-full h-full object-contain"
                           onError={(e) => {
                             // Fallback jika gambar belum diupload
-                            e.currentTarget.src = "https://i.ibb.co.com/DPpLWdvz/qris.jpg";
+                            e.currentTarget.src = "https://placehold.co/600x800/white/black?text=UPLOAD+GAMBAR+QRIS+KE\nFOLDER+PUBLIC+DENGAN\nNAMA+qris.jpg";
                           }}
                         />
                       </div>
