@@ -215,7 +215,7 @@ export default function Store() {
                           className="w-full h-full object-contain"
                           onError={(e) => {
                             // Fallback jika gambar belum diupload
-                            e.currentTarget.src = "https://placehold.co/600x800/white/black?text=UPLOAD+GAMBAR+QRIS+KE\nFOLDER+PUBLIC+DENGAN\nNAMA+qris.jpg";
+                            e.currentTarget.src = "https://i.ibb.co.com/DPpLWdvz/qris.jpg";
                           }}
                         />
                       </div>
